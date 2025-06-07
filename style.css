@@ -1,0 +1,79 @@
+:root {
+  --accent: #ff3cac;
+  --grey: #111;
+}
+* {
+  font-family: "Roboto", sans-serif;
+}
+#intro {
+  height: 100dvh;
+  width: 100dvw;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+#popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 30dvmin;
+  font-weight: 900;
+  color: var(--accent);
+  background: var(--grey);
+  text-align: center;
+  line-height: 100dvh;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path .2s;
+}
+#popup.hidden {
+  clip-path: inset(0 100% 0 0);
+}
+#convo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--accent);
+  text-align: center;
+}
+#ccenter {
+  display: inline-block;
+  width: min(60dvh, 100dvw);
+  text-align: left;
+  margin-left: 2dvmin;
+  margin-right: 2dvmin;
+  margin-top: 5dvmin;
+}
+.mspeech {
+  font-size: 3dvmin;
+  font-weight: 900;
+  color: var(--grey);
+  margin: 1dvmin;
+}
+.bubble {
+  display: inline-block;
+  font-size: 3dvmin;
+  font-weight: 900;
+  color: var(--grey);
+  margin: 0.5dvmin;
+  padding: 1dvmin;
+  border: 2px solid var(--grey);
+  border-radius: 2dvmin;
+  cursor: pointer;
+  position: relative;
+}
+.bubble:after {
+  content: "";
+  position: absolute;
+  top: calc(2px + 5dvmin);
+  left: 2dvmin;
+  transform: rotate(45deg);
+  height: 1dvmin;
+  width: 1dvmin;
+  background: var(--accent);
+  border-right: 2px solid var(--grey);
+  border-bottom: 2px solid var(--grey);
+}
