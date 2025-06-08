@@ -2,6 +2,23 @@
   --accent: #ff3cac;
   --grey: #111;
 }
+::-moz-selection {
+  color: var(--accent);
+  background: var(--grey);
+}
+::selection {
+  color: var(--accent);
+  background: var(--grey);
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: none;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--grey);
+}
 * {
   font-family: "Roboto", sans-serif;
 }
@@ -30,6 +47,9 @@
 #popup.hidden {
   clip-path: inset(0 100% 0 0);
 }
+body{
+  background: var(--accent);
+}
 #convo {
   position: absolute;
   top: 0;
@@ -41,39 +61,73 @@
 }
 #ccenter {
   display: inline-block;
-  width: min(60dvh, 100dvw);
+  width: min(800px, 100dvw);
   text-align: left;
-  margin-left: 2dvmin;
-  margin-right: 2dvmin;
-  margin-top: 5dvmin;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 40px;
+  overflow-y: scroll;
+  height: 100%;
+  box-sizing: border-box;
 }
 .mspeech {
-  font-size: 3dvmin;
+  font-size: 30px;
   font-weight: 900;
   color: var(--grey);
-  margin: 1dvmin;
+  margin: 12px;
+  margin-top: 25px;
+  transition: transform .4s;
+}
+.mspeech.offscreen{
+  transform: translateX(-100dvw);
 }
 .bubble {
   display: inline-block;
-  font-size: 3dvmin;
+  font-size: 30px;
   font-weight: 900;
   color: var(--grey);
-  margin: 0.5dvmin;
-  padding: 1dvmin;
-  border: 2px solid var(--grey);
-  border-radius: 2dvmin;
+  margin: 12px;
+  padding: 5px 25px;
+  border: 5px solid var(--grey);
+  border-radius: 20px;
   cursor: pointer;
   position: relative;
+  transition: transform .4s;
+}
+.bubble.clicked {
+  background: var(--grey);
+  color: var(--accent);
+  transform: scale(1.2);
+  z-index: 2;
+}
+.bubble.hide {
+  transform: translateY(-300px) !important;
+  z-index: 1;
 }
 .bubble:after {
   content: "";
+  z-index: 1;
   position: absolute;
-  top: calc(2px + 5dvmin);
-  left: 2dvmin;
+  bottom: -12px;
+  left: 25px;
   transform: rotate(45deg);
-  height: 1dvmin;
-  width: 1dvmin;
+  height: 12px;
+  width: 12px;
   background: var(--accent);
-  border-right: 2px solid var(--grey);
-  border-bottom: 2px solid var(--grey);
+  border-right: 5px solid var(--grey);
+  border-bottom: 5px solid var(--grey);
+}
+.bubble.clicked:after {
+  background: var(--grey);
+}
+#repliesclip {
+  text-wrap: wrap;
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+#replies {
+  transition: transform .2s;
+}
+#replies.hide {
+  transform: translateY(-300px);
 }
