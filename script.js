@@ -122,21 +122,55 @@ const CYOA = {
 
 function dialogue(id) {
   console.log(id);
-  const container = document.getElementById("ccenter");
-  const d = CYOA[id];
-  const mspeech = document.createElement("DIV");
-  mspeech.innerHTML = d.text;
-  mspeech.className = "mspeech";
-  container.appendChild(mspeech);
+  const replyContainer = document.getElementById("replies");
 
-  for(const reply of (d.replies ?? [])) {
-    const bubble = document.createElement("DIV");
-    bubble.innerHTML = reply.text;
-    let localText = reply.id;
-    bubble.onclick = () => dialogue(localText);
-    bubble.className = "bubble";
-    container.appendChild(bubble);
+  for(const reply of replyContainer.children) {
+    if(reply.className == "bubble") {
+      reply.className = "bubble hide";
+    }
+    reply.onclick = undefined;
   }
+
+  setTimeout(() => {
+    const container = document.getElementById("mtexts");
+    const d = CYOA[id];
+    const mspeech = document.createElement("DIV");
+    mspeech.innerHTML = d.text;
+    mspeech.className = "mspeech offscreen";
+    container.appendChild(mspeech);
+
+    requestAnimationFrame(() => {
+      mspeech.className = "mspeech";
+    });
+
+    replyContainer.style.transition = "none";
+    replyContainer.className = "hide";
+    replyContainer.offsetHeight;
+    replyContainer.style.transition = "";
+
+
+    replyContainer.innerHTML = "";
+    for(const reply of (d.replies ?? [])) {
+      const bubble = document.createElement("DIV");
+      bubble.innerHTML = reply.text;
+      let localText = reply.id;
+      bubble.onclick = () => {
+        bubble.className = "bubble clicked";
+        dialogue(localText);
+        setTimeout(() => {
+          bubble.className = "bubble clicked hide";
+        }, 400);
+      };
+      bubble.ontouchstart = bubble.onclick;
+
+      bubble.className = "bubble";
+      replyContainer.appendChild(bubble);
+    }
+
+    setTimeout(() => {
+      replyContainer.className = "";
+    }, 400);
+  }, 800);
 }
 
 setTimeout(() => {
