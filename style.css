@@ -1,6 +1,9 @@
 :root {
   --accent: #ff3cac;
   --grey: #111;
+
+  --cursor1: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23FF3CAC" stroke="%23111111" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
+  --cursor2: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23111111" stroke="%23111111" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
 }
 ::-moz-selection {
   color: var(--accent);
@@ -22,12 +25,22 @@
 * {
   font-family: "Roboto", sans-serif;
 }
+body {
+  margin: 0;
+}
 #intro {
   height: 100dvh;
   width: 100dvw;
   position: fixed;
   top: 0;
   left: 0;
+  clip-path: inset(0 0 0 0);
+  transition: clip-path .2s;
+  cursor: var(--cursor2);
+  z-index: 1;
+}
+#intro.hidden {
+  clip-path: inset(0 0 100% 0);
 }
 #popup {
   position: absolute;
@@ -47,9 +60,6 @@
 #popup.hidden {
   clip-path: inset(0 100% 0 0);
 }
-body{
-  background: var(--accent);
-}
 #convo {
   position: absolute;
   top: 0;
@@ -63,8 +73,6 @@ body{
   display: inline-block;
   width: min(800px, 100dvw);
   text-align: left;
-  padding-left: 25px;
-  padding-right: 25px;
   padding-top: 40px;
   overflow-y: scroll;
   height: 100%;
@@ -74,8 +82,7 @@ body{
   font-size: 30px;
   font-weight: 900;
   color: var(--grey);
-  margin: 12px;
-  margin-top: 25px;
+  margin: 25px 37px 12px 37px;
   transition: transform .4s;
 }
 .mspeech.offscreen{
@@ -90,23 +97,27 @@ body{
   padding: 5px 25px;
   border: 5px solid var(--grey);
   border-radius: 20px;
-  cursor: pointer;
+  cursor: var(--cursor1);
   position: relative;
-  transition: transform .4s;
+  transition: transform .4s, border .4s, margin .4s;
+}
+.bubble:hover {
+  background: var(--grey);
+  color: var(--accent);
 }
 .bubble.clicked {
   background: var(--grey);
   color: var(--accent);
-  transform: scale(1.2);
-  z-index: 2;
+  transform: scale(1.1);
+  z-index: 3;
 }
 .bubble.hide {
-  transform: translateY(-300px) !important;
-  z-index: 1;
+  transform: translateY(-600px) !important;
+  z-index: 2;
 }
 .bubble:after {
   content: "";
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   bottom: -12px;
   left: 25px;
@@ -116,6 +127,9 @@ body{
   background: var(--accent);
   border-right: 5px solid var(--grey);
   border-bottom: 5px solid var(--grey);
+}
+.bubble:hover:after {
+  background: var(--grey);
 }
 .bubble.clicked:after {
   background: var(--grey);
@@ -127,7 +141,20 @@ body{
 }
 #replies {
   transition: transform .2s;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 #replies.hide {
-  transform: translateY(-300px);
+  transform: translateY(-600px);
+}
+#landing {
+  background: var(--grey);
+  min-height: 100dvh;
+}
+#scrollingbg {
+  height: 100dvh;
+  width: 100dvw;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
