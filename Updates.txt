@@ -1,0 +1,41 @@
+Hi Johnny - here's some of the writing. I'm having a hard time testing it all since there's a blocker (there's a scrolling problem) but most of the dialogue is done. 
+
+hi! my name's maya. this is a blog about the human factor of cybersecurity.
+ hi maya 
+ I WOULD LIKE TO SKIP THIS DIALOGUE 
+
+now that we're acquainted, tell me a little bit about yourself.
+ 
+-> i'm a tech and ethics enthusiast!
+ -> what are you interested in? 
+ -> artificial intelligence
+  -> Very cool! What's your take on it?
+   -> terrible! have you seen the terminator? 
+    -> i fell asleep halfway through that movie. for ai though - i guess we'll see?
+   -> it's all just statistics. 
+    -> but isn't human behavior largely just reacting to data input? that'll be explored on my blog!
+   -> i outsource my thinking to ChatGPT. 
+    -> i'm a top 0.1% ChatGPT user. can we be friends?
+   -> it's a powerful tool with potential for abuse.
+    -> i completely agree with this take! with great power comes great responsibility - and it's in the hands of us. 
+ -> cybersecurity 
+  -> how come? 
+   -> i want money 
+    -> doesn't hurt, right?
+   -> i want to be a hacker
+    -> i hope the good kind! breaking things is fun, and it doesn't always require breaking the law. 
+   -> i want to protect people!
+    -> you know that roman guy that's associated with that orange-flavored dairy queen beverage? thfhkvbnhz1101@nthps.jvt. you should also check out osint! (redirects to osint)
+ -> Humanitarian/mission-based efforts
+  -> what kind? 
+   -> protecting our country's assets
+    -> it's not as warm and fuzzy as a soup kitchen, but it makes an impact. mad respect! you should also start checking out osint - people like us crowdsource intelligence gathering. pretty neat, right?
+   -> protecting vulnerable populations 
+    -> you'll love this blog <3
+   -> combating misinformation
+    -> you know what's more important than some stakeholder's wallet? democracy! 
+   -> accessible software (disabled) 
+    -> this is definitely not as touched on as it should be. you're awesome!
+   -> civil rights tech!
+    -> tech in its purest form is profit-neutral, feminist, and has the potential to progress humanity. and to understand that, is the beginning of a movement.
+
