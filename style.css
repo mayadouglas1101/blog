@@ -2,8 +2,10 @@
   --accent: #ff3cac;
   --grey: #111;
 
-  --cursor1: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23FF3CAC" stroke="%23111111" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
-  --cursor2: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23111111" stroke="%23111111" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
+  --cursor1: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23FF3CAC" stroke="%23111" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
+  --cursor2: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23111" stroke="%23111" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
+  --cursor3: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23111" stroke="%23FF3CAC" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
+  --cursor4: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24"><path fill="%23FF3CAC" stroke="%23FF3CAC" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
 }
 ::-moz-selection {
   color: var(--accent);
@@ -19,11 +21,14 @@
 ::-webkit-scrollbar-track {
   background: none;
 }
-::-webkit-scrollbar-thumb {
+#ccenter::-webkit-scrollbar-thumb {
   background: var(--grey);
 }
 * {
   font-family: "Roboto", sans-serif;
+}
+html {
+  overflow: hidden;
 }
 body {
   margin: 0;
@@ -149,12 +154,55 @@ body {
 }
 #landing {
   background: var(--grey);
-  min-height: 100dvh;
+  height: 100vh;
+  cursor: var(--cursor3);
+  overflow: hidden;
+  overflow-y: scroll;
+  position: relative;
+}
+#landing::-webkit-scrollbar-thumb {
+  background: var(--accent);
 }
 #scrollingbg {
   height: 100dvh;
   width: 100dvw;
+}
+#title {
   position: absolute;
-  top: 0;
+  top: 50dvh;
   left: 0;
+  transform: translateY(-50%);
+  color: var(--accent);
+  font-family: "Playfair Display";
+  font-size: 12dvmin;
+  font-weight: 900;
+  overflow: hidden;
+}
+#bmenu{
+  position: relative;
+  top: -70px;
+  /* cursor: var(--cursor4); */
+  display: flex;
+  width: 100%;
+}
+.bbutton {
+  flex-grow: 1;
+  font-size: 30px;
+  font-weight: 900;
+  background: var(--grey);
+  color: var(--accent);
+  text-align: center;
+  padding: 20px;
+  cursor: var(--cursor4);
+}
+.bbutton > * {
+  cursor: var(--cursor4);
+}
+.bbutton:hover {
+  background: var(--accent);
+  color: var(--grey);
+}
+.paragraph {
+  color: var(--accent);
+  font-size: 20px;
 }

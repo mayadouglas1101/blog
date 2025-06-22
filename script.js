@@ -133,21 +133,22 @@ function dialogue(id) {
 
     function render() {
       requestAnimationFrame(render);
-      sctx.clearRect(0, 0, sw, sh);
+      sctx.fillStyle = "#111";
+      sctx.fillRect(0, 0, sw, sh);
 
       const m = sctx.measureText("PROTECT PEOPLE NOT PROFITS \u2665\uFE0E ");
-      console.log(m);
       for(var r = 0; r < Math.ceil(sh / 32); r++) {
         const rand = s => (Math.sin(s) * 10000 + 10000) % 1;
         const roff = (Date.now() * (0.1 + 0.2 * rand(r))) % m.width - m.width;
-        // if(Math.floor(mouseY / 32) == r) {
-        //   sctx.fillStyle = "#ff3cac";
-        //   sctx.fillRect(0, r * 32, sw, 32);
-        //   sctx.fillStyle = "#111";
-        // } else {
-        //   sctx.fillStyle = "#ff3cac";
-        // }
-        sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
+        if(Math.floor(mouseY / 32) == r) {
+          sctx.fillStyle = "#ff3cac";
+          sctx.fillRect(0, r * 32, sw, 32);
+          sctx.fillStyle = "#111";
+        } else {
+          sctx.fillStyle = "#ff3cac";
+        }
+        // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
+        // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#fff" : "#ff3cac";
         for(var c = 0; c <= Math.ceil(sw / m.width); c++) {
           sctx.fillText("PROTECT PEOPLE NOT PROFITS \u2665\uFE0E ", c * m.width + roff, r * 32);
         }
@@ -158,7 +159,7 @@ function dialogue(id) {
     var mouseY = 0;
 
     window.onmousemove = e => {
-      mouseY = e.clientY;
+      mouseY = e.clientY + document.getElementById("landing").scrollTop;
     }
 
     setTimeout(() => {
@@ -206,7 +207,6 @@ function dialogue(id) {
           bubble.className = "bubble clicked hide";
         }, 400);
       };
-      bubble.ontouchstart = bubble.onclick;
 
       bubble.className = "bubble";
       replyContainer.appendChild(bubble);
