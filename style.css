@@ -155,7 +155,7 @@ body {
 #landing {
   background: var(--grey);
   height: 100vh;
-  cursor: var(--cursor3);
+  cursor: var(--cursor4);
   overflow: hidden;
   overflow-y: scroll;
   position: relative;
@@ -179,11 +179,15 @@ body {
   overflow: hidden;
 }
 #bmenu{
-  position: relative;
-  top: -70px;
-  /* cursor: var(--cursor4); */
+  /* position: relative;
+  top: -70px; */
   display: flex;
   width: 100%;
+}
+@media (width <= 800px) {
+  #bmenu{
+    flex-direction: column;
+  }
 }
 .bbutton {
   flex-grow: 1;
@@ -193,10 +197,7 @@ body {
   color: var(--accent);
   text-align: center;
   padding: 20px;
-  cursor: var(--cursor4);
-}
-.bbutton > * {
-  cursor: var(--cursor4);
+  cursor: var(--cursor3);
 }
 .bbutton:hover {
   background: var(--accent);
