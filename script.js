@@ -123,31 +123,37 @@ function dialogue(id) {
   if(id == "end") {
     const scrollingbg = document.getElementById("scrollingbg");
     var sh, sw;
-    scrollingbg.height = sh = window.innerHeight;
-    scrollingbg.width = sw = window.innerWidth;
+    scrollingbg.height = sh = window.innerHeight * window.devicePixelRatio;
+    scrollingbg.width = sw = window.innerWidth * window.devicePixelRatio;
     var sctx = scrollingbg.getContext("2d");
-
-    sctx.fillStyle = "#ff3cac";
-    sctx.textBaseline = "hanging";
-    sctx.font = '32px "Playfair Display"';
 
     function render() {
       requestAnimationFrame(render);
+
+      if(sh != window.innerHeight * window.devicePixelRatio || sw != window.innerWidth * window.devicePixelRatio) {
+        scrollingbg.height = sh = window.innerHeight * window.devicePixelRatio;
+        scrollingbg.width = sw = window.innerWidth * window.devicePixelRatio;
+        sctx = scrollingbg.getContext("2d");
+      }
+
       sctx.fillStyle = "#111";
       sctx.fillRect(0, 0, sw, sh);
+
+      sctx.textBaseline = "hanging";
+      sctx.font = '32px "Playfair Display"';
 
       const m = sctx.measureText("PROTECT PEOPLE NOT PROFITS \u2665\uFE0E ");
       for(var r = 0; r < Math.ceil(sh / 32); r++) {
         const rand = s => (Math.sin(s) * 10000 + 10000) % 1;
         const roff = (Date.now() * (0.1 + 0.2 * rand(r))) % m.width - m.width;
-        if(Math.floor(mouseY / 32) == r) {
-          sctx.fillStyle = "#ff3cac";
-          sctx.fillRect(0, r * 32, sw, 32);
-          sctx.fillStyle = "#111";
-        } else {
-          sctx.fillStyle = "#ff3cac";
-        }
-        // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
+        // if(Math.floor(mouseY / 32) == r) {
+        //   sctx.fillStyle = "#ff3cac";
+        //   sctx.fillRect(0, r * 32, sw, 32);
+        //   sctx.fillStyle = "#111";
+        // } else {
+        //   sctx.fillStyle = "#ff3cac";
+        // }
+        sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
         // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#fff" : "#ff3cac";
         for(var c = 0; c <= Math.ceil(sw / m.width); c++) {
           sctx.fillText("PROTECT PEOPLE NOT PROFITS \u2665\uFE0E ", c * m.width + roff, r * 32);
