@@ -164,7 +164,7 @@ body {
   background: var(--accent);
 }
 #scrollingbg {
-  height: 100dvh;
+  height: calc(100dvh);
   width: 100dvw;
 }
 #title {
@@ -179,27 +179,32 @@ body {
   overflow: hidden;
 }
 #bmenu{
-  /* position: relative;
-  top: -70px; */
   display: flex;
   width: 100%;
+  transform: translateY(-100%);
+  /* background: var(--grey); */
 }
-@media (width <= 800px) {
+@media (width <= 1220px) {
   #bmenu{
     flex-direction: column;
   }
 }
 .bbutton {
   flex-grow: 1;
+  font-family: "Playfair Display";
   font-size: 30px;
-  font-weight: 900;
-  background: var(--grey);
   color: var(--accent);
   text-align: center;
   padding: 20px;
   cursor: var(--cursor3);
 }
-.bbutton:hover {
+.bbutton.selected {
+  transform: scale(1.5);
+}
+.bbutton > span {
+  font-family: "Playfair Display";
+}
+.bbutton:hover > span {
   background: var(--accent);
   color: var(--grey);
 }

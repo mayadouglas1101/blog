@@ -122,17 +122,19 @@ function dialogue(id) {
 
   if(id == "end") {
     const scrollingbg = document.getElementById("scrollingbg");
-    var sh, sw;
-    scrollingbg.height = sh = window.innerHeight * window.devicePixelRatio;
-    scrollingbg.width = sw = window.innerWidth * window.devicePixelRatio;
+    var sh, sw, gh = () => window.innerHeight * window.devicePixelRatio, gw = () => window.innerWidth * window.devicePixelRatio;
+    scrollingbg.height = sh = gh();
+    scrollingbg.width = sw = gw();
     var sctx = scrollingbg.getContext("2d");
+
+    console.log(sh, sw, gh(), gw());
 
     function render() {
       requestAnimationFrame(render);
 
-      if(sh != window.innerHeight * window.devicePixelRatio || sw != window.innerWidth * window.devicePixelRatio) {
-        scrollingbg.height = sh = window.innerHeight * window.devicePixelRatio;
-        scrollingbg.width = sw = window.innerWidth * window.devicePixelRatio;
+      if(sh != gh() || sw != gw()) {
+        scrollingbg.height = sh = gh();
+        scrollingbg.width = sw = gw();
         sctx = scrollingbg.getContext("2d");
       }
 
