@@ -144,7 +144,7 @@ function dialogue(id) {
       sctx.textBaseline = "hanging";
       sctx.font = '32px "Playfair Display"';
 
-      const m = sctx.measureText("PROTECT PEOPLE NOT PROFITS \u2665\uFE0E ");
+      const m = sctx.measureText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ");
       for(var r = 0; r < Math.ceil(sh / 32); r++) {
         const rand = s => (Math.sin(s) * 10000 + 10000) % 1;
         const roff = (Date.now() * (0.1 + 0.2 * rand(r))) % m.width - m.width;
@@ -158,7 +158,7 @@ function dialogue(id) {
         sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
         // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#fff" : "#ff3cac";
         for(var c = 0; c <= Math.ceil(sw / m.width); c++) {
-          sctx.fillText("PROTECT PEOPLE NOT PROFITS \u2665\uFE0E ", c * m.width + roff, r * 32);
+          sctx.fillText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ", c * m.width + roff, r * 32);
         }
       }
     }
