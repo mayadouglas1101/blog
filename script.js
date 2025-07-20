@@ -166,9 +166,9 @@ function dialogue(id) {
 
     var mouseY = 0;
 
-    window.onmousemove = e => {
+    window.addEventListener("mousemove", e => {
       mouseY = e.clientY + document.getElementById("landing").scrollTop;
-    }
+    });
 
     setTimeout(() => {
       document.getElementById("intro").className = "hidden";
@@ -230,3 +230,64 @@ setTimeout(() => {
   document.getElementById("popup").className = "hidden";
   dialogue("realstart");
 }, 1000);
+
+
+
+const key = "AMZNBLYOKCQXJDRWIESVHGTFUP";
+
+const outer = document.getElementById("outer");
+const inner = document.getElementById("inner");
+
+for(var i = 0; i < 26; i++) {
+	let o = document.createElement("DIV");
+	o.className = "outer char";
+	o.style.transform = `rotate(${i / 26}turn)`;
+	o.innerHTML = key[i];
+	outer.appendChild(o);
+
+	let n = document.createElement("DIV");
+	n.className = "inner char";
+	n.style.transform = `rotate(${i / 26}turn)`;
+	n.innerHTML = i + 1;
+	inner.appendChild(n);
+}
+
+let isSpinning = false, spinnerAngle = 0;
+const spinner = document.getElementById("spinner"), encodedTexts = document.getElementsByClassName("encoded");
+
+function updateEncodedText(offs, locked) {
+	for(let s of encodedTexts) {
+		s.innerHTML = s.getAttribute("value").split("").map(l => key.indexOf(l) == -1 ? " " : key[(key.indexOf(l) + offs + 1 - parseInt(s.getAttribute("code")) + 26) % 26]).join("");
+		s.className = locked && offs + 1 == parseInt(s.getAttribute("code")) ? "encoded match" : "encoded";
+	}
+}
+updateEncodedText(0);
+
+window.onmouseup = () => {
+	if(isSpinning) {
+		isSpinning = false;
+		spinnerAngle -= (spinnerAngle + Math.PI / 26) % (Math.PI * 2 / 26) - Math.PI / 26;
+		outer.className = "lock";
+		outer.style.transform = `rotate(${spinnerAngle}rad)`;
+		updateEncodedText(Math.round(spinnerAngle / Math.PI / 2 * 26), true);
+	}
+}
+spinner.onmousedown = e => {
+	isSpinning = true;
+	e.preventDefault();
+	outer.className = "";
+}
+window.addEventListener("mousemove", e => {
+	if(isSpinning) {
+		const rect = spinner.getBoundingClientRect();
+
+		const oldAngle = Math.atan2(e.pageY - rect.top - e.movementY / window.devicePixelRatio - rect.height / 2, e.pageX - rect.left - e.movementX / window.devicePixelRatio - rect.width / 2);
+		const newAngle = Math.atan2(e.pageY - rect.top - rect.height / 2, e.pageX - rect.left - rect.width / 2);
+
+		spinnerAngle = (spinnerAngle + newAngle - oldAngle + Math.PI * 2) % (Math.PI * 2);
+		outer.style.transform = `rotate(${spinnerAngle}rad)`;
+
+		updateEncodedText(Math.round(spinnerAngle / Math.PI / 2 * 26));
+	}
+	e.preventDefault();
+});
