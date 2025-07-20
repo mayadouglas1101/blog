@@ -184,11 +184,6 @@ body {
   transform: translateY(-100%);
   /* background: var(--grey); */
 }
-@media (width <= 1220px) {
-  #bmenu{
-    flex-direction: column;
-  }
-}
 .bbutton {
   flex-grow: 1;
   font-family: "Playfair Display";
@@ -214,8 +209,10 @@ body {
 }
 #spinner {
 	position: relative;
-	height: 30vmin;
-	width: 30vmin;
+	height: max(300px, 30dvmin);
+	width: max(300px, 30dvmin);
+  margin-bottom: 5dvmin;
+  display: inline-block;
 }
 #outer {
 	position: absolute;
@@ -227,10 +224,10 @@ body {
 }
 #outerring {
 	position: absolute;
-	top: -15vmin;
-	left: -15vmin;
-	height: 30vmin;
-	width: 30vmin;
+	top: min(-150px, -15dvmin);
+	left: min(-150px, -15dvmin);
+	height: max(300px, 30dvmin);
+	width: max(300px, 30dvmin);
 	border: 2px solid var(--accent);
 	border-radius: 100%;
 	box-sizing: border-box;
@@ -242,20 +239,20 @@ body {
 }
 #innerring {
 	position: absolute;
-	top: -13vmin;
-	left: -13vmin;
-	height: 26vmin;
-	width: 26vmin;
+	top: min(-130px, -13dvmin);
+	left: min(-130px, -13dvmin);
+	height: max(260px, 26dvmin);
+	width: max(260px, 26dvmin);
 	border: 2px solid var(--accent);
 	border-radius: 100%;
 	box-sizing: border-box;
 }
 #centerring {
 	position: absolute;
-	top: -11vmin;
-	left: -11vmin;
-	height: 22vmin;
-	width: 22vmin;
+	top: min(-110px, -11dvmin);
+	left: min(-110px, -11dvmin);
+	height: max(220px, 22dvmin);
+	width: max(220px, 22dvmin);
 	border: 2px solid var(--accent);
 	border-radius: 100%;
 	box-sizing: border-box;
@@ -264,37 +261,65 @@ body {
 	position: absolute;
 	transform-origin: bottom;
 	bottom: 0;
-	left: -1.5vmin;
+	left: min(-15px, -1.5dvmin);
 	font-family: "Overpass Mono";
   color: var(--accent);
 	text-align: center;
-	width: 3vmin;
-	font-size: 1.8vmin;
+	width: max(30px, 3dvmin);
+	font-size: max(18px, 1.8dvmin);
 	font-weight: 900;
-	line-height: 2.6vmin;
+	line-height: max(26px, 2.6vmin);
 }
 .char.outer {
-	height: 15vmin;
+	height: max(150px, 15dvmin);
 }
 .char.inner {
-	height: 13vmin;
+	height: max(130px, 13dvmin);
 }
 .encoded {
 	font-family: "Overpass Mono";
 }
-.encoded.match {
-	font-weight: 900;
+.encoded.match, .encoded.match > a {
   color: var(--accent);
+  font-family: "Overpass Mono";
+}
+.encoded.match > a {
+  /* font-weight: 900; */
 }
 .links {
   flex: 1;
   font-family: "Overpass Mono";
   color: #222;
   font-size: 2dvmin;
+  word-break: break-all;
 }
 #maincols {
   min-height: 50dvmin;
   display: flex;
   gap: 5vmin;
   padding: 5vmin;
+  margin-bottom: 80px;
+}
+.keys {
+  text-align: left;
+  display: inline-block;
+}
+.key {
+  font-family: "Overpass Mono";
+  color: var(--accent);
+  font-size: 2dvmin;
+}
+#spinnercolumn {
+  text-align: center;
+}
+@media (width <= 1000px) {
+  #maincols{
+    flex-direction: column-reverse;
+  }
+  .links {
+    font-size: 20px;
+  }
+  .key {
+    font-size: 20px;
+  }
 }

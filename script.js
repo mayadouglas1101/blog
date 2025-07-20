@@ -253,17 +253,27 @@ for(var i = 0; i < 26; i++) {
 }
 
 let isSpinning = false, spinnerAngle = 0;
+let spinnerTouch;
 const spinner = document.getElementById("spinner"), encodedTexts = document.getElementsByClassName("encoded");
 
 function updateEncodedText(offs, locked) {
 	for(let s of encodedTexts) {
 		s.innerHTML = s.getAttribute("value").split("").map(l => key.indexOf(l) == -1 ? " " : key[(key.indexOf(l) + offs + 1 - parseInt(s.getAttribute("code")) + 26) % 26]).join("");
-		s.className = locked && offs + 1 == parseInt(s.getAttribute("code")) ? "encoded match" : "encoded";
+
+    if(locked && offs + 1 == parseInt(s.getAttribute("code"))) {
+      s.className = "encoded match";
+      let href = s.getAttribute("href");
+      if(href) {
+        s.innerHTML = `<a href=${href}>${s.innerHTML}</a>`;
+      }
+    } else {
+      s.className = "encoded";
+    }
 	}
 }
 updateEncodedText(0);
 
-window.onmouseup = () => {
+window.addEventListener("mouseup", () => {
 	if(isSpinning) {
 		isSpinning = false;
 		spinnerAngle -= (spinnerAngle + Math.PI / 26) % (Math.PI * 2 / 26) - Math.PI / 26;
@@ -271,23 +281,75 @@ window.onmouseup = () => {
 		outer.style.transform = `rotate(${spinnerAngle}rad)`;
 		updateEncodedText(Math.round(spinnerAngle / Math.PI / 2 * 26), true);
 	}
-}
-spinner.onmousedown = e => {
+});
+
+spinner.addEventListener("mousedown", e => {
+  e.preventDefault();
 	isSpinning = true;
-	e.preventDefault();
 	outer.className = "";
-}
-window.addEventListener("mousemove", e => {
-	if(isSpinning) {
+  updateEncodedText(Math.round(spinnerAngle / Math.PI / 2 * 26));
+});
+
+function handleMove(e) {
+  if(isSpinning) {
+    if(e.preventDefault)
+      e.preventDefault();
+
 		const rect = spinner.getBoundingClientRect();
 
 		const oldAngle = Math.atan2(e.pageY - rect.top - e.movementY / window.devicePixelRatio - rect.height / 2, e.pageX - rect.left - e.movementX / window.devicePixelRatio - rect.width / 2);
 		const newAngle = Math.atan2(e.pageY - rect.top - rect.height / 2, e.pageX - rect.left - rect.width / 2);
 
-		spinnerAngle = (spinnerAngle + newAngle - oldAngle + Math.PI * 2) % (Math.PI * 2);
+    let angleDescaler = Math.min(1, Math.hypot(e.pageX - rect.left - rect.width / 2, e.pageY - rect.top - rect.height / 2) / rect.width * 2);
+    let delta = newAngle - oldAngle;
+    if(delta > Math.PI)
+      delta -= Math.PI * 2;
+    if(delta < -Math.PI)
+      delta += Math.PI * 2;
+
+    console.log(angleDescaler);
+
+    if(angleDescaler > 0.25)
+		  spinnerAngle = (spinnerAngle + angleDescaler * delta + Math.PI * 2) % (Math.PI * 2);
 		outer.style.transform = `rotate(${spinnerAngle}rad)`;
 
 		updateEncodedText(Math.round(spinnerAngle / Math.PI / 2 * 26));
 	}
-	e.preventDefault();
+}
+
+window.addEventListener("mousemove", handleMove);
+
+let lastTouchX, lastTouchY; // ew. Why no movementX and Y?
+spinner.addEventListener("touchstart", e => {
+  e.preventDefault();
+  isSpinning = true;
+  outer.className = "";
+
+  spinnerTouch = e.changedTouches[0].identifier;
+
+  lastTouchX = e.changedTouches[0].pageX;
+  lastTouchY = e.changedTouches[0].pageY;
+});
+
+window.addEventListener("touchmove", e => {
+  if(isSpinning) {
+    const match = Array.from(e.touches).filter(t => t.identifier == spinnerTouch);
+    if(match[0]) {
+      match[0].movementX = (match[0].pageX - lastTouchX) * window.devicePixelRatio;
+      match[0].movementY = (match[0].pageY - lastTouchY) * window.devicePixelRatio;
+      handleMove(match[0]);
+      lastTouchX = match[0].pageX;
+      lastTouchY = match[0].pageY;
+    }
+  }
+});
+
+window.addEventListener("touchend", e => {
+  if(isSpinning && e.changedTouches[0].identifier == spinnerTouch) {
+    isSpinning = false;
+		spinnerAngle -= (spinnerAngle + Math.PI / 26) % (Math.PI * 2 / 26) - Math.PI / 26;
+		outer.className = "lock";
+		outer.style.transform = `rotate(${spinnerAngle}rad)`;
+		updateEncodedText(Math.round(spinnerAngle / Math.PI / 2 * 26), true);
+  }
 });
