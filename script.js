@@ -35,7 +35,7 @@ const CYOA = {
   human: {
     text: "what kind?",
     replies: [
-      {text: "protecting our country's assets.", id: "patriot"},
+      {text: "national security.", id: "patriot"},
       {text: "protecting vulnerable populations.", id: "vuln"},
       {text: "combating misinformation.", id: "misinfo"},
       {text: "civil rights tech!", id: "civilrights"}
@@ -108,7 +108,7 @@ const CYOA = {
     ]
   },
   civilrights: {
-    text: "tech in its purest form is profit-neutral, feminist, and has the potential to progress humanity. and to understand that, is the beginning of a movement.",
+    text: "tech in its purest form is humanitarian in every way. every turn away from that is deviating from potential innovation. and to understand that, is the beginning of a movement.",
     replies: [
       {text: "okay", id: "end"}
     ]
