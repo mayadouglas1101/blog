@@ -45,7 +45,7 @@ for(const img of imgs) {
 
     lc.id = img.id;
     lc.className = img.className;
-    lc.style.setProperty("--cwidth", lc.width / window.devicePixelRatio + "px")
+    lc.style.setProperty("--cwidth", lc.width / window.devicePixelRatio + "px");
     img.replaceWith(lc);
   }
   if(img.complete) img.onload();
