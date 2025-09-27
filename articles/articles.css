@@ -62,7 +62,7 @@ body{
   text-decoration: none;
 }
 #border {
-  width: min(100%, 90dvh);
+  width: min(100%, max(1000px, 90dvh));
   height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;

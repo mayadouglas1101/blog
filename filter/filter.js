@@ -4,13 +4,14 @@ const GREY = "#111";
 const ACCENT = "#ff3cac";
 
 const imgs = document.getElementsByClassName("filter");
+const dpr = window.devicePixelRatio;
 for(const img of imgs) {
   img.style.opacity = 0;
   img.onload = () => {
     img.style.opacity = "";
     const sc = document.createElement("CANVAS");
-    sc.width = Math.round(img.width * window.devicePixelRatio / DOT_SIZE);
-    sc.height = Math.round(img.height * window.devicePixelRatio / DOT_SIZE);
+    sc.width = Math.round(img.width * dpr / DOT_SIZE);
+    sc.height = Math.round(img.height * dpr / DOT_SIZE);
     const sctx = sc.getContext("2d");
     sctx.imageSmoothingQuality = "high";
     sctx.drawImage(img, 0, 0, sc.width, sc.height);
@@ -45,7 +46,7 @@ for(const img of imgs) {
 
     lc.id = img.id;
     lc.className = img.className;
-    lc.style.setProperty("--cwidth", lc.width / window.devicePixelRatio + "px");
+    lc.style.setProperty("--cwidth", lc.width / dpr + "px");
     img.replaceWith(lc);
   }
   if(img.complete) img.onload();

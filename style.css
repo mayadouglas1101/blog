@@ -47,6 +47,8 @@ body {
 }
 #intro.hidden {
   clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+  touch-action: none;
 }
 #popup {
   position: absolute;
@@ -257,6 +259,15 @@ body {
 	border: 2px solid var(--accent);
 	border-radius: 100%;
 	box-sizing: border-box;
+  overflow: hidden;
+}
+#ringtex {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .char {
 	position: absolute;

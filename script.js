@@ -129,6 +129,8 @@ function dialogue(id) {
 
     console.log(sh, sw, gh(), gw());
 
+    const mobile = /Mobi|Android/i.test(navigator.userAgent);
+
     function render() {
       requestAnimationFrame(render);
 
@@ -155,7 +157,7 @@ function dialogue(id) {
         // } else {
         //   sctx.fillStyle = "#ff3cac";
         // }
-        sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
+        sctx.fillStyle = !mobile && Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
         // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#fff" : "#ff3cac";
         for(var c = 0; c <= Math.ceil(sw / m.width); c++) {
           sctx.fillText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ", c * m.width + roff, r * 32);
@@ -166,9 +168,11 @@ function dialogue(id) {
 
     var mouseY = 0;
 
-    window.addEventListener("mousemove", e => {
-      mouseY = e.clientY + document.getElementById("landing").scrollTop;
-    });
+    if(!mobile) {
+      window.addEventListener("mousemove", e => {
+        mouseY = e.clientY + document.getElementById("landing").scrollTop;
+      });
+    }
 
     setTimeout(() => {
       document.getElementById("intro").className = "hidden";
