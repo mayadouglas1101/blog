@@ -162,6 +162,15 @@ body {
   overflow: hidden;
   overflow-y: scroll;
   position: relative;
+
+  ::-moz-selection {
+    color: var(--grey);
+    background: var(--accent);
+  }
+  ::selection {
+    color: var(--grey);
+    background: var(--accent);
+  }
 }
 #landing::-webkit-scrollbar-thumb {
   background: var(--accent);
@@ -325,14 +334,33 @@ body {
 #spinnercolumn {
   text-align: center;
 }
+#bio {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--grey);
+  color: var(--accent);
+  padding: 16px;
+  font: 2dvmin "Overpass Mono";
+  border-left: 10px solid var(--ltgrey);
+}
+#pfp {
+  width: 100%;
+}
 @media (width <= 1000px) {
   #maincols{
     flex-direction: column-reverse;
   }
-  .links {
+  .links, .key, #bio {
     font-size: 20px;
   }
-  .key {
-    font-size: 20px;
+
+  #bio {
+    position: initial;
+    width: 100%;
+    border: none;
   }
 }

@@ -4,7 +4,7 @@ const GREY = "#111";
 const ACCENT = "#ff3cac";
 
 const imgs = document.getElementsByClassName("filter");
-const dpr = window.devicePixelRatio;
+const dpr = Math.sqrt(window.devicePixelRatio);
 for(const img of imgs) {
   img.style.opacity = 0;
   img.onload = () => {
