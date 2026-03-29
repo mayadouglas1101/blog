@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" translate="no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <meta name="theme-color" content="#ff3cac">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="google" content="notranslate">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@300..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>HEATED RIVALRY ENCRYPTION</title>
+    <link rel="stylesheet" href="articles.css">
+  </head>
+  <body>
+    <div id="border">
+      <a id="navbar" href="../">MAYA DOUGLAS</a>
+      <div id="content">
+
+        <h1>I ENCRYPTED A FILE USING A HEATED RIVALRY SOUNDTRACK. HERE'S THE MATH.</h1>
+        <h2>CATEGORY: CYBERSECURITY</h2>
+          DISCLOSURE: This project was developed with the assistance of AI tools for ideation, structuring, and documentation. All cryptographic design decisions, implementation, and validation were performed by the author.
+        
+          A few weeks ago I started a cryptography project on a whim: use a WAV audio file as an AES-256 encryption key. The idea is simple. Instead of typing a password, you point the script at a WAV file and it derives the key from the raw audio data. I used the 'All the Things She Said (Matt Hibbert 'Heated Rivalry' Edit)'', which you can grab off Bandcamp in lossless format.
+
+          The repo is <a href="https://github.com/mayadouglas1101/WavEncryption">on my GitHub</a> if you want to try it yourself - it includes the WAV file and a sample encrypted file so you can actually run it end to end. But this post is about what's happening under the hood, because the math is genuinely interesting and I didn't see a lot of plain-language writeups that covered both the hashing and the cipher together.
+
+        <h3>Step 1: Turning audio into a key.</h3>
+
+          A WAV file is just a container. The first 44 bytes are a header describing sample rate, bit depth, channel count, and so on. Everything after that is raw PCM audio - a long sequence of amplitude samples, usually 16 bits each at 44,100 samples per second. That's what we actually want.
+
+          We skip the header entirely and feed the raw PCM data into SHA-256. SHA-256 is a cryptographic hash function that takes an input of any length and always produces exactly 32 bytes of output. Those 32 bytes are our key.
+    
+
+        <pre>
+key = SHA-256(PCM_data)
+key ∈ {0,1}²⁵⁶
+
+32 bytes = 256 bits.
+Keyspace: 2²⁵⁶ ≈ 10⁷⁷ possible values.
+        </pre>
+
+          SHA-256 has two properties that make it useful here. First, it's deterministic - the same WAV file always produces the same key, which is what lets you decrypt later. Second, it's a one-way function: you can't reverse it to recover the audio from the key, which means the key doesn't leak anything about your file. We skip the header specifically because minor metadata changes (a tagging app touching the file, for instance) would silently change the hash and lock you out.
+
+        <h3>Step 2: The cipher -> AES-256-CBC.</h3>
+
+          AES (Advanced Encryption Standard) is a block cipher. It operates on fixed 16-byte (128-bit) chunks of data at a time. The "256" refers to the key length - longer keys mean more rounds of transformation and a larger keyspace. AES-256 runs 14 rounds of substitution, permutation, and mixing on each block, using operations over GF(2⁸) - the Galois field of 256 elements.
+ 
+          CBC stands for Cipher Block Chaining. In plain ECB mode, identical plaintext blocks produce identical ciphertext blocks, which leaks structural information. CBC fixes this by XORing each plaintext block with the previous ciphertext block before encrypting:
+
+        <pre>
+C₀ = E_k(P₀ ⊕ IV)
+Cᵢ = E_k(Pᵢ ⊕ Cᵢ₋₁)
+
+E_k = AES encryption with key k
+P   = plaintext block
+C   = ciphertext block
+⊕   = XOR
+IV  = initialisation vector
+        </pre>
+
+          The IV seeds the chain for the first block. It needs to be unique per encryption. Not secret, just unpredictable. We generate 16 random bytes with <code>os.urandom()</code> and store them at the start of the output file. Anyone who intercepts the file can read the IV, but without the key it tells them nothing useful.
+
+        <h3>Step 3: Padding.</h3>
+
+          Because AES works in 16-byte blocks, the plaintext has to be a multiple of 16 bytes. Most files aren't. We use PKCS#7 padding: if the last block is <em>n</em> bytes short, append <em>n</em> bytes each with the value <em>n</em>.
+
+        <pre>
+If len(plaintext) mod 16 = 12, pad with 4 bytes of value 0x04:
+[..., 0x04, 0x04, 0x04, 0x04]
+
+If plaintext is already a multiple of 16, append a full extra
+block of 0x10 so padding is always present and unambiguous.
+        </pre>
+
+          On decryption, read the last byte of the decrypted output - that's the pad length. Strip that many bytes from the end. We also store the original file size in the output header as an extra safeguard.
+
+        <h3>The output file format.</h3>
+
+        <pre>
+[ MAGIC 8B ][ IV 16B ][ original size 8B ][ ciphertext NB ]
+
+MAGIC         = WAVENC1\x00 - identifies the format
+IV            = random 16 bytes, unique per encryption
+original size = big-endian unsigned 64-bit integer
+ciphertext    = AES-256-CBC encrypted content
+        </pre>
+
+        <h3>How secure is this actually?</h3>
+
+          AES-256-CBC with a properly derived key is considered computationally secure - no known attack breaks it faster than brute force, and a 256-bit keyspace is beyond any feasible brute force. The real question is key quality.
+
+          A commercially released WAV file has high entropy - millions of audio samples at 16 bits each, hashed down to 256 bits via SHA-256. It's not a randomly generated key, but it's not a weak password either. The main threat model is someone who knows which WAV file you used. If the file is public (which mine is, intentionally, for the demo) the scheme is purely demonstrative. For real use, your key WAV should be private and backed up somewhere safe.
+
+          For a project, the interesting part was never "use this instead of GPG." It was understanding what a key derivation step does, why IVs matter, and what block chaining actually solves. All of that clicked a lot faster once I had working code producing real output.
+
+          The repo is <a href="https://github.com/mayadouglas1101/WavEncryption">here</a>. Clone it, decrypt <code>cottage.enc</code>, and see what it says.
+
+      </div>
+    </div>
+    <script src="../filter/filter.js"></script>
+  </body>
+</html>
