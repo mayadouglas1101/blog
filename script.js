@@ -60,7 +60,7 @@ const CYOA = {
     ]
   },
   aifan: {
-    text: "i'm a top 0.1% ChatGPT user. can we be friends?",
+    text: "can we be friends?",
     replies: [
       {text: "okay", id: "end"}
     ]
