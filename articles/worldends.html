@@ -19,12 +19,49 @@
       gtag('js', new Date());
       gtag('config', 'G-ZJZHMEBGPY');
     </script>
+    <style>
+      #wall {
+        padding: 24px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        max-width: 480px;
+      }
+      #wall p {
+        margin: 0;
+      }
+      #wall-btn {
+        background: var(--accent);
+        border: none;
+        color: var(--grey);
+        font-family: "Overpass Mono", monospace;
+        font-size: 0.9em;
+        font-weight: 700;
+        padding: 8px 16px;
+        cursor: pointer;
+        letter-spacing: 0.1em;
+      }
+      #wall-btn:hover {
+        background: var(--grey);
+        color: var(--accent);
+        outline: 2px solid var(--accent);
+      }
+      #worldends-article {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div id="border">
       <a id="navbar" href="../">MAYA DOUGLAS</a>
       <div id="content"><h1>WHAT HAPPENS WHEN THE WORLD ENDS</h1>
 <h2>CATEGORY: MISCELLANEOUS</h2>
+<div id="wall">
+  <p id="wall-text">Fair warning: this one's corny. Sincerely, unironically corny. You have to agree to that before you keep going.</p>
+  <button id="wall-btn">I AGREE</button>
+</div>
+<div id="worldends-article">
 Whether the most important part of incident response is 'lessons learned' is apparently up to CompTIA, since unbacked claims are apparently fair game in standardized tests. Hey, nothing wrong with being authoritative. So here's another immutable rule of the universe.
 
 Everyone lives through experiences that they couldn't fathom were possibilities. A personal black swan event? Such as a decades long employee losing their job. An education comes to a halt during a pandemic. Something that is such a given that you don't even register it as a variable until it's lost.
@@ -84,8 +121,24 @@ The crash course on operating systems was fascinating since the stakes were high
 I eventually started applying to jobs and A/B testing my resumes. Not because online applications are reliable or the market is stellar, but because surviving an apocalypse comes down to statistics. And I iterated. And I iterated again. And continued building on the only material I had - love.
 
 While I'd love to end this in a 'I got a six figure offer at a great job!!!' moral of the story, I don't think that this is quite the end. None of this was ever permanent. Not then, not now.
+</div>
       </div>
     </div>
+
+    <script>
+      let wallStage = 0;
+      document.getElementById("wall-btn").addEventListener("click", () => {
+        if (wallStage === 0) {
+          document.getElementById("wall-text").textContent = "hm, are you sure? 🤨";
+          document.getElementById("wall-btn").textContent = "YES, I'M SURE";
+          wallStage = 1;
+        } else {
+          document.getElementById("wall").style.display = "none";
+          document.getElementById("worldends-article").style.display = "block";
+        }
+      });
+    </script>
+
     <script src="../filter/filter.js"></script>
   </body>
 </html>
