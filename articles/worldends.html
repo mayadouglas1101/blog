@@ -100,6 +100,8 @@ I eventually built projects, blogs, and labs. Not because it was career oriented
 
 Across an Arby's parking lot, I built an alter ego. A hacker name. Cult of the Dead Cow might largely be inactive but their legacy isn't. My hacker name was Ace of Hearts. Unlike NewportMentholLover69420 (original), it had meaning.
 
+I don't play cards. Not a fan. But the suits were sitting right there.
+
 Security is played in spades. Adversary, kill chain, red team, blue team, blast radius - every word we have for ourselves is a war word. The commercial layer is diamonds: retainers, uptime, the invoice that clears whether or not anybody got safer.
 
 Nobody plays hearts.
@@ -119,6 +121,8 @@ The crash course on operating systems was fascinating since the stakes were high
 I eventually started applying to jobs and A/B testing my resumes. Not because online applications are reliable or the market is stellar, but because surviving an apocalypse comes down to statistics. And I iterated. And I iterated again. And continued building on the only material I had - rubble.
 
 While I'd love to end this in a 'Making six figures at an awesome sexy defense AI cyber startup (I do)' moral of the story, I don't think that this is quite the end. None of this was ever permanent. Not then, not now.
+
+I wish I could tell you I'm harder to own these days. Excuse me while I go find out where this process came from.
 </div>
       </div>
     </div>
@@ -127,8 +131,10 @@ While I'd love to end this in a 'Making six figures at an awesome sexy defense A
       let wallStage = 0;
       document.getElementById("wall-btn").addEventListener("click", () => {
         if (wallStage === 0) {
-          document.getElementById("wall-text").textContent = "hm, are you sure? 🤨";
-          document.getElementById("wall-btn").textContent = "YES, I'M SURE";
+          document.getElementById("wall-text").textContent = "HM, ARE YOU SURE? 🤨";
+          document.getElementById("wall-text").style.fontSize = "2em";
+          document.getElementById("wall-text").style.fontWeight = "900";
+          document.getElementById("wall-btn").textContent = "SHUT THE FUCK UP, YES I'M SURE";
           wallStage = 1;
         } else {
           document.getElementById("wall").style.display = "none";
