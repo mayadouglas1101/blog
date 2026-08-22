@@ -27,7 +27,7 @@
 
           The repo is <a href="https://github.com/mayadouglas1101/WavEncryption">on my GitHub</a> if you want to try it yourself - it includes the WAV file and a sample encrypted file so you can actually run it end to end. But this post is about what's happening under the hood, because the math is genuinely interesting and I didn't see a lot of plain-language writeups that covered both the hashing and the cipher together.
 
-        <h3>Step 1: Turning audio into a key.</h3>
+        <div class="step"><span class="step-num">01</span><span class="step-title">Turning audio into a key</span></div>
 
           A WAV file is just a container. The first 44 bytes are a header describing sample rate, bit depth, channel count, and so on. Everything after that is raw PCM audio - a long sequence of amplitude samples, usually 16 bits each at 44,100 samples per second. That's what we actually want.
 
@@ -44,7 +44,7 @@ Keyspace: 2²⁵⁶ ≈ 10⁷⁷ possible values.
 
           SHA-256 has two properties that make it useful here. First, it's deterministic - the same WAV file always produces the same key, which is what lets you decrypt later. Second, it's a one-way function: you can't reverse it to recover the audio from the key, which means the key doesn't leak anything about your file. We skip the header specifically because minor metadata changes (a tagging app touching the file, for instance) would silently change the hash and lock you out.
 
-        <h3>Step 2: The cipher -> AES-256-CBC.</h3>
+        <div class="step"><span class="step-num">02</span><span class="step-title">The cipher -&gt; AES-256-CBC</span></div>
 
           AES (Advanced Encryption Standard) is a block cipher. It operates on fixed 16-byte (128-bit) chunks of data at a time. The "256" refers to the key length - longer keys mean more rounds of transformation and a larger keyspace. AES-256 runs 14 rounds of substitution, permutation, and mixing on each block, using operations over GF(2⁸) - the Galois field of 256 elements.
  
@@ -63,7 +63,7 @@ IV  = initialisation vector
 
           The IV seeds the chain for the first block. It needs to be unique per encryption. Not secret, just unpredictable. We generate 16 random bytes with <code>os.urandom()</code> and store them at the start of the output file. Anyone who intercepts the file can read the IV, but without the key it tells them nothing useful.
 
-        <h3>Step 3: Padding.</h3>
+        <div class="step"><span class="step-num">03</span><span class="step-title">Padding</span></div>
 
           Because AES works in 16-byte blocks, the plaintext has to be a multiple of 16 bytes. Most files aren't. We use PKCS#7 padding: if the last block is <em>n</em> bytes short, append <em>n</em> bytes each with the value <em>n</em>.
 
@@ -77,7 +77,7 @@ block of 0x10 so padding is always present and unambiguous.
 
           On decryption, read the last byte of the decrypted output - that's the pad length. Strip that many bytes from the end. We also store the original file size in the output header as an extra safeguard.
 
-        <h3>The output file format.</h3>
+        <div class="section"><span class="section-title">The output file format</span></div>
 
         <pre>
 [ MAGIC 8B ][ IV 16B ][ original size 8B ][ ciphertext NB ]
@@ -88,7 +88,7 @@ original size = big-endian unsigned 64-bit integer
 ciphertext    = AES-256-CBC encrypted content
         </pre>
 
-        <h3>How secure is this actually?</h3>
+        <div class="section"><span class="section-title">How secure is this actually?</span></div>
 
           AES-256-CBC with a properly derived key is considered computationally secure - no known attack breaks it faster than brute force, and a 256-bit keyspace is beyond any feasible brute force. The real question is key quality.
 
@@ -102,7 +102,7 @@ ciphertext    = AES-256-CBC encrypted content
       <footer id="site-footer">
         <div class="noise"></div>
         <div class="scan"></div>
-        <span class="glitch-sig" data-text="MAYA DOUGLAS">MAYA DOUGLAS</span>
+        <span class="glitch-sig" data-text="PROTECT PEOPLE, NOT POCKETS">PROTECT PEOPLE, NOT POCKETS</span>
       </footer>
     </div>
     <script src="../filter/filter.js"></script>

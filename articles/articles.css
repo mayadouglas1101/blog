@@ -90,6 +90,46 @@ a {
   color: var(--accent);
   cursor: var(--cursor3);
 }
+.step {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 36px 0 14px;
+  padding-top: 10px;
+  border-top: 2px solid var(--accent);
+}
+.step-num {
+  flex-shrink: 0;
+  font-family: "Overpass Mono", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--grey);
+  background: var(--accent);
+  padding: 2px 8px;
+}
+.step-title {
+  font-family: "Overpass Mono", monospace;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.section {
+  margin: 36px 0 14px;
+  padding-top: 10px;
+  border-top: 2px solid var(--accent);
+}
+.section-title {
+  display: block;
+  font-family: "Overpass Mono", monospace;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
 #back-btn {
   position: fixed;
   top: 16px;
@@ -261,7 +301,8 @@ a {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 3px;
-  font-size: 18px;
+  font-size: clamp(10px, 3.2vw, 18px);
+  white-space: nowrap;
   color: var(--grey);
   animation: footer-jitter 5s infinite;
 }
