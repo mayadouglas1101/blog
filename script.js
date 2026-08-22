@@ -232,8 +232,8 @@ function dialogue(id) {
 
 setTimeout(() => {
   document.getElementById("popup").className = "hidden";
-  dialogue("realstart");
-}, 1000);
+  dialogue("end");
+}, 0);
 
 
 
