@@ -117,65 +117,62 @@ const CYOA = {
 
 }
 
+function initLanding() {
+  const scrollingbg = document.getElementById("scrollingbg");
+  var sh, sw, gh = () => window.innerHeight * window.devicePixelRatio, gw = () => window.innerWidth * window.devicePixelRatio;
+  scrollingbg.height = sh = gh();
+  scrollingbg.width = sw = gw();
+  var sctx = scrollingbg.getContext("2d");
+
+  const mobile = /Mobi|Android/i.test(navigator.userAgent);
+
+  function render() {
+    requestAnimationFrame(render);
+
+    if(sh != gh() || sw != gw()) {
+      scrollingbg.height = sh = gh();
+      scrollingbg.width = sw = gw();
+      sctx = scrollingbg.getContext("2d");
+    }
+
+    sctx.fillStyle = "#111";
+    sctx.fillRect(0, 0, sw, sh);
+
+    sctx.textBaseline = "hanging";
+    sctx.font = '32px "Playfair Display"';
+
+    const m = sctx.measureText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ");
+    for(var r = 0; r < Math.ceil(sh / 32); r++) {
+      const rand = s => (Math.sin(s) * 10000 + 10000) % 1;
+      const roff = (Date.now() * (0.1 + 0.2 * rand(r))) % m.width - m.width;
+      sctx.fillStyle = !mobile && Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
+      for(var c = 0; c <= Math.ceil(sw / m.width); c++) {
+        sctx.fillText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ", c * m.width + roff, r * 32);
+      }
+    }
+  }
+  render();
+
+  var mouseY = 0;
+
+  if(!mobile) {
+    window.addEventListener("mousemove", e => {
+      mouseY = e.clientY + document.getElementById("landing").scrollTop;
+    });
+  }
+}
+
 function dialogue(id) {
   console.log(id);
 
   if(id == "end") {
-    const scrollingbg = document.getElementById("scrollingbg");
-    var sh, sw, gh = () => window.innerHeight * window.devicePixelRatio, gw = () => window.innerWidth * window.devicePixelRatio;
-    scrollingbg.height = sh = gh();
-    scrollingbg.width = sw = gw();
-    var sctx = scrollingbg.getContext("2d");
-
-    console.log(sh, sw, gh(), gw());
-
-    const mobile = /Mobi|Android/i.test(navigator.userAgent);
-
-    function render() {
-      requestAnimationFrame(render);
-
-      if(sh != gh() || sw != gw()) {
-        scrollingbg.height = sh = gh();
-        scrollingbg.width = sw = gw();
-        sctx = scrollingbg.getContext("2d");
-      }
-
-      sctx.fillStyle = "#111";
-      sctx.fillRect(0, 0, sw, sh);
-
-      sctx.textBaseline = "hanging";
-      sctx.font = '32px "Playfair Display"';
-
-      const m = sctx.measureText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ");
-      for(var r = 0; r < Math.ceil(sh / 32); r++) {
-        const rand = s => (Math.sin(s) * 10000 + 10000) % 1;
-        const roff = (Date.now() * (0.1 + 0.2 * rand(r))) % m.width - m.width;
-        // if(Math.floor(mouseY / 32) == r) {
-        //   sctx.fillStyle = "#ff3cac";
-        //   sctx.fillRect(0, r * 32, sw, 32);
-        //   sctx.fillStyle = "#111";
-        // } else {
-        //   sctx.fillStyle = "#ff3cac";
-        // }
-        sctx.fillStyle = !mobile && Math.floor(mouseY / 32) == r ? "#ff3cac" : "#222";
-        // sctx.fillStyle = Math.floor(mouseY / 32) == r ? "#fff" : "#ff3cac";
-        for(var c = 0; c <= Math.ceil(sw / m.width); c++) {
-          sctx.fillText("PROTECT PEOPLE NOT POCKETS \u2665\uFE0E ", c * m.width + roff, r * 32);
-        }
-      }
-    }
-    render();
-
-    var mouseY = 0;
-
-    if(!mobile) {
-      window.addEventListener("mousemove", e => {
-        mouseY = e.clientY + document.getElementById("landing").scrollTop;
-      });
-    }
+    initLanding();
 
     setTimeout(() => {
       document.getElementById("intro").className = "hidden";
+      try {
+        sessionStorage.setItem("introShown", "1");
+      } catch(e) {}
     }, 400);
     return;
   }
@@ -230,56 +227,67 @@ function dialogue(id) {
   }, 800);
 }
 
-(() => {
-  const popup = document.getElementById("popup");
-  const linesEl = document.getElementById("terminal-lines");
-  const command = "sudo protect people, not pockets";
-  const CHAR_DELAY = 110;
-  const FIRST_DELAY = 400;
-  const PROCESS_PAUSE = 500;
-  const FINAL_PAUSE = 1400;
+let introAlreadyShown = false;
+try {
+  introAlreadyShown = sessionStorage.getItem("introShown") === "1";
+} catch(e) {}
 
-  const line = document.createElement("DIV");
-  line.className = "term-line";
-  const prompt = document.createElement("SPAN");
-  prompt.className = "term-prompt";
-  prompt.textContent = "$ ";
-  const typed = document.createElement("SPAN");
-  typed.className = "term-typed";
-  const cursor = document.createElement("SPAN");
-  cursor.className = "term-cursor";
-  cursor.innerHTML = "&#9608;";
-  line.appendChild(prompt);
-  line.appendChild(typed);
-  line.appendChild(cursor);
-  linesEl.appendChild(line);
+if(introAlreadyShown) {
+  document.getElementById("intro").className = "hidden";
+  document.getElementById("popup").className = "hidden";
+  initLanding();
+} else {
+  (() => {
+    const popup = document.getElementById("popup");
+    const linesEl = document.getElementById("terminal-lines");
+    const command = "sudo protect people, not pockets";
+    const CHAR_DELAY = 110;
+    const FIRST_DELAY = 400;
+    const PROCESS_PAUSE = 500;
+    const FINAL_PAUSE = 1400;
 
-  let i = 0;
-  function typeChar() {
-    if(i < command.length) {
-      typed.textContent += command[i];
-      i++;
-      setTimeout(typeChar, CHAR_DELAY);
-    } else {
-      cursor.classList.add("static");
-      setTimeout(showError, PROCESS_PAUSE);
+    const line = document.createElement("DIV");
+    line.className = "term-line";
+    const prompt = document.createElement("SPAN");
+    prompt.className = "term-prompt";
+    prompt.textContent = "$ ";
+    const typed = document.createElement("SPAN");
+    typed.className = "term-typed";
+    const cursor = document.createElement("SPAN");
+    cursor.className = "term-cursor";
+    cursor.innerHTML = "&#9608;";
+    line.appendChild(prompt);
+    line.appendChild(typed);
+    line.appendChild(cursor);
+    linesEl.appendChild(line);
+
+    let i = 0;
+    function typeChar() {
+      if(i < command.length) {
+        typed.textContent += command[i];
+        i++;
+        setTimeout(typeChar, CHAR_DELAY);
+      } else {
+        cursor.classList.add("static");
+        setTimeout(showError, PROCESS_PAUSE);
+      }
     }
-  }
 
-  function showError() {
-    const errLine = document.createElement("DIV");
-    errLine.className = "term-line term-error";
-    errLine.textContent = "sudo: protect: command not found";
-    linesEl.appendChild(errLine);
+    function showError() {
+      const errLine = document.createElement("DIV");
+      errLine.className = "term-line term-error";
+      errLine.textContent = "sudo: protect: command not found";
+      linesEl.appendChild(errLine);
 
-    setTimeout(() => {
-      popup.className = "hidden";
-      dialogue("end");
-    }, FINAL_PAUSE);
-  }
+      setTimeout(() => {
+        popup.className = "hidden";
+        dialogue("end");
+      }, FINAL_PAUSE);
+    }
 
-  setTimeout(typeChar, FIRST_DELAY);
-})();
+    setTimeout(typeChar, FIRST_DELAY);
+  })();
+}
 
 
 

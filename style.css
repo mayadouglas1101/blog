@@ -51,6 +51,12 @@ body {
   pointer-events: none;
   touch-action: none;
 }
+html.intro-skip #intro {
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+  touch-action: none;
+  transition: none;
+}
 #popup {
   position: absolute;
   top: 0;
