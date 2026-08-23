@@ -171,7 +171,7 @@ function dialogue(id) {
     setTimeout(() => {
       document.getElementById("intro").className = "hidden";
       try {
-        sessionStorage.setItem("introShown", "1");
+        localStorage.setItem("introShown", "1");
       } catch(e) {}
     }, 400);
     return;
@@ -229,7 +229,7 @@ function dialogue(id) {
 
 let introAlreadyShown = false;
 try {
-  introAlreadyShown = sessionStorage.getItem("introShown") === "1";
+  introAlreadyShown = localStorage.getItem("introShown") === "1";
 } catch(e) {}
 
 if(introAlreadyShown) {

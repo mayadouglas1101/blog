@@ -22,7 +22,7 @@
 </script>
 <script>
   try {
-    if (sessionStorage.getItem("introShown") === "1") {
+    if (localStorage.getItem("introShown") === "1") {
       document.documentElement.classList.add("intro-skip");
     }
   } catch (e) {}
