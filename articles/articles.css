@@ -63,6 +63,7 @@ body{
   text-decoration: none;
 }
 #border {
+  position: relative;
   width: min(100%, max(1000px, 90dvh));
   height: 100dvh;
   overflow-x: hidden;
@@ -196,6 +197,20 @@ a {
 #back-btn:hover .back-label {
   color: var(--grey);
   background: var(--accent);
+}
+@media (max-width: 700px) {
+  #back-btn {
+    position: absolute;
+  }
+  #navbar {
+    padding-top: 64px;
+  }
+  .heart-icon svg {
+    fill: var(--grey);
+  }
+  .back-label {
+    color: var(--grey);
+  }
 }
 #decrypt-loader {
   position: fixed;

@@ -230,10 +230,56 @@ function dialogue(id) {
   }, 800);
 }
 
-setTimeout(() => {
-  document.getElementById("popup").className = "hidden";
-  dialogue("end");
-}, 0);
+(() => {
+  const popup = document.getElementById("popup");
+  const linesEl = document.getElementById("terminal-lines");
+  const command = "sudo protect people, not pockets";
+  const CHAR_DELAY = 110;
+  const FIRST_DELAY = 400;
+  const PROCESS_PAUSE = 500;
+  const FINAL_PAUSE = 1400;
+
+  const line = document.createElement("DIV");
+  line.className = "term-line";
+  const prompt = document.createElement("SPAN");
+  prompt.className = "term-prompt";
+  prompt.textContent = "$ ";
+  const typed = document.createElement("SPAN");
+  typed.className = "term-typed";
+  const cursor = document.createElement("SPAN");
+  cursor.className = "term-cursor";
+  cursor.innerHTML = "&#9608;";
+  line.appendChild(prompt);
+  line.appendChild(typed);
+  line.appendChild(cursor);
+  linesEl.appendChild(line);
+
+  let i = 0;
+  function typeChar() {
+    if(i < command.length) {
+      typed.textContent += command[i];
+      i++;
+      setTimeout(typeChar, CHAR_DELAY);
+    } else {
+      cursor.classList.add("static");
+      setTimeout(showError, PROCESS_PAUSE);
+    }
+  }
+
+  function showError() {
+    const errLine = document.createElement("DIV");
+    errLine.className = "term-line term-error";
+    errLine.textContent = "sudo: protect: command not found";
+    linesEl.appendChild(errLine);
+
+    setTimeout(() => {
+      popup.className = "hidden";
+      dialogue("end");
+    }, FINAL_PAUSE);
+  }
+
+  setTimeout(typeChar, FIRST_DELAY);
+})();
 
 
 
